@@ -12,14 +12,14 @@ export function ToastContainer() {
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-md w-full px-4 sm:px-0 pointer-events-none">
       {toasts.map((toast) => {
-        const icons = {
+        const icons: Record<string, React.ReactNode> = {
           success: <CheckCircle2 className="w-4 h-4 shrink-0" />,
           error: <XCircle className="w-4 h-4 shrink-0" />,
           warning: <AlertTriangle className="w-4 h-4 shrink-0" />,
           info: <Info className="w-4 h-4 shrink-0" />,
         };
 
-        const theme = {
+        const theme: Record<string, string> = {
           success: "border-ml-green text-ml-green bg-ml-green/10",
           error: "border-ml-pink text-ml-pink bg-ml-pink/10",
           warning: "border-ml-yellow text-ml-yellow bg-ml-yellow/10",
@@ -49,7 +49,7 @@ export function ToastContainer() {
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="p-1 hover:bg-current/10 transition-colors"
+              className="p-1 hover:opacity-70 transition-opacity"
             >
               <X className="w-4 h-4" />
             </button>

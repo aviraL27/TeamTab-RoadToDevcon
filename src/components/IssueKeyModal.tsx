@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useTeamTab } from "@/lib/store";
 import { CATEGORY_OPTIONS } from "@/lib/mockData";
-import { X, Key, Plus, ShieldCheck, Sparkles, User, Wallet, DollarSign } from "lucide-react";
+import { X, Plus, Wallet, Shuffle } from "lucide-react";
 
 interface IssueKeyModalProps {
   isOpen: boolean;
@@ -43,13 +43,21 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
     });
     setIsSubmitting(false);
     if (success) {
+      // Reset form
+      setMemberName("");
+      setMember("");
+      setRole("AI / ML Hacker");
+      setCategory("API Credits & Compute");
+      setCeiling("0.40");
+      setSingleTxLimit("0.20");
+      setExpiryHours(72);
       onClose();
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ml-bg/90 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-md bg-ml-bg border border-ml-border p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-lg bg-ml-bg border border-ml-border p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Close Button */}
         <button
@@ -62,30 +70,44 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
         {/* Header */}
         <div className="flex items-center gap-4 pb-6 border-b border-ml-border">
           <div className="w-12 h-12 border border-ml-border flex items-center justify-center bg-ml-blue text-ml-bg">
-            <PlusCircle className="w-6 h-6" />
+            <Plus className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-xl font-display text-ml-beige uppercase tracking-tight">Issue Key</h3>
+            <h3 className="text-xl font-display text-ml-beige uppercase tracking-tight">Issue Session Key</h3>
             <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mt-1">
-              Mint a scoped session key.
+              Mint a scoped spending key for a team member.
             </p>
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-5">
           
           {/* Member Name */}
           <div>
             <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
-              Teammate Name
+              Teammate Name *
             </label>
             <input
               type="text"
               required
               value={memberName}
               onChange={(e) => setMemberName(e.target.value)}
-              placeholder="e.g. Alice"
+              placeholder="e.g. Alice Zhang"
+              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige focus:outline-none transition-colors uppercase font-mono"
+            />
+          </div>
+
+          {/* Role */}
+          <div>
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+              Role / Title
+            </label>
+            <input
+              type="text"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              placeholder="e.g. Frontend Hacker"
               className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige focus:outline-none transition-colors uppercase font-mono"
             />
           </div>
@@ -93,18 +115,28 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
           {/* Member Address */}
           <div>
             <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
-              Signer Address (EOA)
+              Signer Address (EOA) *
             </label>
-            <input
-              type="text"
-              required
-              value={memberAddress}
-              onChange={(e) => setMemberAddress(e.target.value)}
-              placeholder="0x..."
-              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige font-mono focus:outline-none transition-colors"
-            />
-            <p className="text-[9px] text-ml-beige/40 font-mono mt-2 uppercase">
-              This address will sign transactions on behalf of the vault.
+            <div className="flex gap-2">
+              <input
+                type="text"
+                required
+                value={member}
+                onChange={(e) => setMember(e.target.value)}
+                placeholder="0x..."
+                className="flex-1 px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige font-mono focus:outline-none transition-colors"
+              />
+              <button
+                type="button"
+                onClick={generateBurnerAddress}
+                className="px-3 py-2 border border-ml-border bg-ml-surface hover:bg-ml-beige hover:text-ml-bg text-ml-beige transition-colors"
+                title="Generate a random demo address"
+              >
+                <Shuffle className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-[9px] text-ml-beige/40 font-mono mt-1 uppercase">
+              This address signs transactions on behalf of the vault. Click shuffle for a demo address.
             </p>
           </div>
 
@@ -125,7 +157,7 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
                   placeholder="0.5"
                   className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-sm font-mono font-bold text-ml-beige focus:outline-none transition-colors"
                 />
-                <span className="absolute right-4 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
+                <span className="absolute right-3 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
                   ETH
                 </span>
               </div>
@@ -142,12 +174,12 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
                   step="0.01"
                   min="0.01"
                   required
-                  value={singleLimit}
-                  onChange={(e) => setSingleLimit(e.target.value)}
+                  value={singleTxLimit}
+                  onChange={(e) => setSingleTxLimit(e.target.value)}
                   placeholder="0.1"
                   className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-sm font-mono font-bold text-ml-beige focus:outline-none transition-colors"
                 />
-                <span className="absolute right-4 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
+                <span className="absolute right-3 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
                   ETH
                 </span>
               </div>
@@ -172,6 +204,23 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
             </select>
           </div>
 
+          {/* Expiry */}
+          <div>
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+              Key Expires After
+            </label>
+            <select
+              value={expiryHours}
+              onChange={(e) => setExpiryHours(Number(e.target.value))}
+              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs font-mono uppercase tracking-widest text-ml-beige focus:outline-none transition-colors appearance-none"
+            >
+              <option value={24}>24 Hours</option>
+              <option value={48}>48 Hours</option>
+              <option value={72}>72 Hours (Hackathon)</option>
+              <option value={168}>1 Week</option>
+            </select>
+          </div>
+
           {/* Actions */}
           <div className="pt-4 flex items-center justify-end gap-4 border-t border-ml-border">
             <button
@@ -184,7 +233,7 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-3 bg-ml-blue border border-ml-blue text-ml-bg hover:bg-transparent hover:text-ml-blue text-[10px] font-mono uppercase tracking-widest transition-colors disabled:opacity-50"
+              className="px-6 py-3 bg-ml-blue border border-ml-blue text-ml-bg hover:bg-transparent hover:text-ml-blue text-[10px] font-mono uppercase tracking-widest transition-colors disabled:opacity-50 flex items-center gap-2"
             >
               {isSubmitting ? "Issuing..." : "Issue Session Key"}
             </button>

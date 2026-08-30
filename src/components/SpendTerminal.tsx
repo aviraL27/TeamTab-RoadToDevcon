@@ -103,13 +103,14 @@ export function SpendTerminal() {
 
       setExecutionStep(4); // Confirmed on-chain
       try {
-        const confetti = (await import("canvas-confetti")).default;
-        confetti({
-          particleCount: 50,
-          spread: 60,
-          origin: { y: 0.7 },
-        });
-      } catch (err) {}
+        if (typeof window !== "undefined") {
+          const confettiModule = await import("canvas-confetti");
+          const confetti = confettiModule.default || confettiModule;
+          if (typeof confetti === "function") {
+            confetti({ particleCount: 60, spread: 70, origin: { y: 0.7 } });
+          }
+        }
+      } catch (_) {}
 
       setTimeout(() => {
         setIsExecuting(false);
