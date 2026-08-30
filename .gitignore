@@ -24,8 +24,8 @@ node_modules
 *.pem
 
 # Local env files
-.env*.local
-.env
+# .env*.local
+# .env
 
 # Vercel
 .vercel
