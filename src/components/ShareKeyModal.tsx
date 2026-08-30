@@ -25,71 +25,71 @@ export function ShareKeyModal({ scopedKey, onClose }: ShareKeyModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-md rounded-3xl bg-gray-900 border border-gray-700 shadow-2xl p-6 sm:p-8 relative text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ml-bg/90 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-md bg-ml-bg border border-ml-border p-8 relative text-center shadow-2xl">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-2 bg-ml-surface border border-ml-border hover:bg-ml-beige hover:text-ml-bg text-ml-beige transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Badge */}
-        <div className="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 mx-auto mb-3">
-          <QrCode className="w-7 h-7" />
+        <div className="w-16 h-16 border border-ml-border flex items-center justify-center bg-ml-blue text-ml-bg mx-auto mb-6">
+          <QrCode className="w-8 h-8" />
         </div>
 
-        <h3 className="text-lg font-bold text-white">Member Session Pass</h3>
-        <p className="text-xs text-gray-400 mt-1">
-          Share this instant spending pass with <strong className="text-white">{scopedKey.memberName}</strong>.
+        <h3 className="text-xl font-display text-ml-beige uppercase tracking-tight">Session Pass</h3>
+        <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mt-2">
+          Share this pass with <strong className="text-ml-beige">{scopedKey.memberName}</strong>.
         </p>
 
         {/* Visual Pass Card */}
-        <div className="mt-5 p-4 rounded-2xl bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 border border-cyan-500/30 text-left relative overflow-hidden">
-          <div className="flex items-center justify-between text-xs text-gray-400 pb-2 border-b border-gray-800">
-            <span>TEAMTAB SESSION PASS</span>
-            <span className="text-emerald-400 font-mono">ERC-4337</span>
+        <div className="mt-8 p-6 bg-ml-surface border border-ml-border text-left relative overflow-hidden group">
+          <div className="flex items-center justify-between text-[9px] font-mono tracking-widest uppercase text-ml-beige/40 pb-4 border-b border-ml-border">
+            <span>TEAMTAB PASS</span>
+            <span className="text-ml-blue font-bold">ERC-4337</span>
           </div>
 
-          <div className="mt-3 flex items-center justify-between">
+          <div className="mt-6 flex flex-col gap-4">
             <div>
-              <div className="font-bold text-white text-sm">{scopedKey.memberName}</div>
-              <div className="text-[11px] text-cyan-400 font-semibold">{scopedKey.category}</div>
+              <div className="font-display text-xl text-ml-beige uppercase tracking-tight">{scopedKey.memberName}</div>
+              <div className="text-[10px] font-mono text-ml-blue uppercase tracking-widest mt-1 border border-ml-blue/30 bg-ml-blue/10 px-2 py-1 inline-block">{scopedKey.category}</div>
             </div>
-            <div className="text-right font-mono">
-              <div className="text-xs text-gray-400">Ceiling</div>
-              <div className="font-bold text-emerald-400">{scopedKey.ceiling} ETH</div>
+            <div>
+              <div className="text-[9px] font-mono tracking-widest text-ml-beige/40 uppercase mb-1">Total Ceiling</div>
+              <div className="font-bold font-mono text-ml-beige text-lg">{scopedKey.ceiling} ETH</div>
             </div>
           </div>
 
-          <div className="mt-3 pt-2 border-t border-gray-800 flex items-center justify-between text-[10px] text-gray-500 font-mono">
-            <span>KEY: {scopedKey.member.slice(0, 10)}...</span>
-            <span className="text-amber-400">AUTO-EXPIRES</span>
+          <div className="mt-6 pt-4 border-t border-ml-border flex items-center justify-between text-[9px] font-mono uppercase tracking-widest text-ml-beige/60">
+            <span className="truncate pr-4">KEY: {scopedKey.member.slice(0, 12)}...</span>
+            <span className="text-ml-pink shrink-0">AUTO-EXPIRES</span>
           </div>
         </div>
 
         {/* Share Link */}
-        <div className="mt-4 flex items-center gap-2">
+        <div className="mt-8 flex items-center gap-4">
           <input
             type="text"
             readOnly
             value={passUrl}
-            className="w-full px-3 py-2 rounded-xl bg-gray-950 border border-gray-800 text-[11px] font-mono text-gray-300 focus:outline-none"
+            className="w-full px-4 py-3 bg-ml-bg border border-ml-border text-[10px] font-mono text-ml-beige focus:outline-none focus:border-ml-beige transition-colors"
           />
           <button
             onClick={handleCopy}
-            className="p-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-bold text-xs transition-colors shrink-0"
+            className="p-3 bg-ml-blue border border-ml-blue text-ml-bg hover:bg-transparent hover:text-ml-blue transition-colors shrink-0"
             title="Copy Pass Link"
           >
-            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
           </button>
         </div>
 
         <button
           onClick={onClose}
-          className="w-full mt-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-200"
+          className="w-full mt-6 py-4 border border-ml-border hover:bg-ml-surface text-[10px] font-mono tracking-widest text-ml-beige uppercase transition-colors"
         >
           Done
         </button>

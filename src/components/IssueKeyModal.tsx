@@ -48,177 +48,147 @@ export function IssueKeyModal({ isOpen, onClose }: IssueKeyModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-lg rounded-3xl bg-gray-900 border border-gray-700 shadow-2xl p-6 sm:p-8 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ml-bg/90 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-md bg-ml-bg border border-ml-border p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-2 bg-ml-surface border border-ml-border hover:bg-ml-beige hover:text-ml-bg text-ml-beige transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
-        {/* Title */}
-        <div className="flex items-center gap-2.5 pb-4 border-b border-gray-800">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-            <Key className="w-5 h-5" />
+        {/* Header */}
+        <div className="flex items-center gap-4 pb-6 border-b border-ml-border">
+          <div className="w-12 h-12 border border-ml-border flex items-center justify-center bg-ml-blue text-ml-bg">
+            <PlusCircle className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white">Issue Scoped Session Key</h3>
-            <p className="text-xs text-gray-400">
-              Grant a teammate programmable spending authority from the team pot.
+            <h3 className="text-xl font-display text-ml-beige uppercase tracking-tight">Issue Key</h3>
+            <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mt-1">
+              Mint a scoped session key.
             </p>
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           
-          {/* Member Name & Role */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs font-semibold text-gray-300 block mb-1">
-                Teammate Name
-              </label>
-              <input
-                type="text"
-                required
-                value={memberName}
-                onChange={(e) => setMemberName(e.target.value)}
-                placeholder="e.g. Sam Altman"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs text-white focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-gray-300 block mb-1">
-                Team Role
-              </label>
-              <input
-                type="text"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                placeholder="e.g. ML & Compute Hacker"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs text-white focus:outline-none"
-              />
-            </div>
-          </div>
-
-          {/* Member Address / Auto-Gen Burner */}
+          {/* Member Name */}
           <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="text-xs font-semibold text-gray-300">
-                Signer Ethereum Address
-              </label>
-              <button
-                type="button"
-                onClick={generateBurnerAddress}
-                className="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold"
-              >
-                <Sparkles className="w-3 h-3" />
-                <span>Auto-Generate Key</span>
-              </button>
-            </div>
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+              Teammate Name
+            </label>
             <input
               type="text"
               required
-              value={member}
-              onChange={(e) => setMember(e.target.value)}
-              placeholder="0x... or click Auto-Generate"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs font-mono text-white focus:outline-none"
+              value={memberName}
+              onChange={(e) => setMemberName(e.target.value)}
+              placeholder="e.g. Alice"
+              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige focus:outline-none transition-colors uppercase font-mono"
             />
           </div>
 
-          {/* Category Scope */}
+          {/* Member Address */}
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">
-              Scoped Spending Category
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+              Signer Address (EOA)
+            </label>
+            <input
+              type="text"
+              required
+              value={memberAddress}
+              onChange={(e) => setMemberAddress(e.target.value)}
+              placeholder="0x..."
+              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige font-mono focus:outline-none transition-colors"
+            />
+            <p className="text-[9px] text-ml-beige/40 font-mono mt-2 uppercase">
+              This address will sign transactions on behalf of the vault.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Ceiling Amount */}
+            <div>
+              <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+                Total Allowance
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  required
+                  value={ceiling}
+                  onChange={(e) => setCeiling(e.target.value)}
+                  placeholder="0.5"
+                  className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-sm font-mono font-bold text-ml-beige focus:outline-none transition-colors"
+                />
+                <span className="absolute right-4 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
+                  ETH
+                </span>
+              </div>
+            </div>
+
+            {/* Single Tx Limit */}
+            <div>
+              <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+                Per Tx Limit
+              </label>
+              <div className="relative">
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  required
+                  value={singleLimit}
+                  onChange={(e) => setSingleLimit(e.target.value)}
+                  placeholder="0.1"
+                  className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-sm font-mono font-bold text-ml-beige focus:outline-none transition-colors"
+                />
+                <span className="absolute right-4 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
+                  ETH
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Category Scoping */}
+          <div>
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+              Allowed Spend Category
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs text-white focus:outline-none"
+              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs font-mono uppercase tracking-widest text-ml-beige focus:outline-none transition-colors appearance-none"
             >
               {CATEGORY_OPTIONS.map((c) => (
-                <option key={c.value} value={c.value} className="bg-gray-900 text-white">
+                <option key={c.value} value={c.value} className="bg-ml-bg text-ml-beige">
                   {c.label}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* Ceiling & Single Tx Limit */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs font-semibold text-gray-300 block mb-1">
-                Budget Ceiling (ETH)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0.01"
-                required
-                value={ceiling}
-                onChange={(e) => setCeiling(e.target.value)}
-                placeholder="0.50"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs font-mono text-white focus:outline-none font-bold"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-gray-300 block mb-1">
-                Single Tx Cap (ETH)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0.01"
-                required
-                value={singleTxLimit}
-                onChange={(e) => setSingleTxLimit(e.target.value)}
-                placeholder="0.20"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs font-mono text-white focus:outline-none font-bold"
-              />
-            </div>
-          </div>
-
-          {/* Expiry Duration */}
-          <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">
-              Authority Duration (Hours)
-            </label>
-            <input
-              type="number"
-              min="1"
-              max="720"
-              value={expiryHours}
-              onChange={(e) => setExpiryHours(parseInt(e.target.value) || 72)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs font-mono text-white focus:outline-none"
-            />
-            <p className="text-[11px] text-gray-400 mt-1">
-              Key will automatically expire after {expiryHours} hours (event conclusion).
-            </p>
-          </div>
-
           {/* Actions */}
-          <div className="pt-3 flex items-center justify-end gap-3">
+          <div className="pt-4 flex items-center justify-end gap-4 border-t border-ml-border">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300"
+              className="px-6 py-3 border border-ml-border hover:bg-ml-surface text-[10px] font-mono uppercase tracking-widest text-ml-beige transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-gray-950 font-bold text-xs shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+              className="px-6 py-3 bg-ml-blue border border-ml-blue text-ml-bg hover:bg-transparent hover:text-ml-blue text-[10px] font-mono uppercase tracking-widest transition-colors disabled:opacity-50"
             >
-              {isSubmitting ? "Registering on Vault..." : "Issue Session Key"}
+              {isSubmitting ? "Issuing..." : "Issue Session Key"}
             </button>
           </div>
-
         </form>
 
       </div>

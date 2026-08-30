@@ -3,21 +3,38 @@
 @tailwind utilities;
 
 :root {
-  --background: 222 47% 7%;
-  --foreground: 210 40% 98%;
-  --card: 222 47% 11%;
-  --card-foreground: 210 40% 98%;
-  --border: 217 33% 18%;
-  --input: 217 33% 18%;
-  --ring: 160 84% 39%;
-  --radius: 0.75rem;
+  --background: 0 0% 4%; /* #0a0a0a */
+  --foreground: 45 25% 89%; /* #EAE7DD beige */
+  --card: 0 0% 7%;
+  --card-foreground: 45 25% 89%;
+  --border: 0 0% 13%; /* #222222 */
+  --input: 0 0% 13%;
+  --ring: 45 25% 89%;
+  --radius: 0rem;
 }
 
 body {
-  color: #f3f4f6;
-  background: radial-gradient(circle at 50% 0%, #131b2e 0%, #080c14 100%);
+  color: #EAE7DD;
+  background-color: #0a0a0a;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
   min-height: 100vh;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  position: relative;
+}
+
+/* Subtle noise overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.8;
 }
 
 /* Custom Scrollbar */
@@ -26,42 +43,47 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0d121f;
+  background: #0a0a0a;
+  border-left: 1px solid #222222;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1f293d;
-  border-radius: 4px;
+  background: #EAE7DD;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #ffffff;
 }
 
-/* Glassmorphism Classes */
-.glass-card {
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-card-interactive {
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Neo-brutalist interactive classes */
+.ml-card {
+  background: #0a0a0a;
+  border: 1px solid #222222;
   transition: all 0.2s ease-in-out;
 }
 
-.glass-card-interactive:hover {
-  border-color: rgba(52, 211, 153, 0.35);
-  box-shadow: 0 0 20px rgba(52, 211, 153, 0.08);
-  transform: translateY(-2px);
+.ml-card-interactive {
+  background: #0a0a0a;
+  border: 1px solid #222222;
+  transition: all 0.2s ease-in-out;
 }
 
-.glow-emerald {
-  box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+.ml-card-interactive:hover {
+  border-color: #EAE7DD;
 }
 
-.glow-cyan {
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+.ml-button {
+  border: 1px solid #222222;
+  background: transparent;
+  color: #EAE7DD;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s;
+  border-radius: 9999px; /* Pill shape */
+}
+
+.ml-button:hover {
+  border-color: #EAE7DD;
+  color: #fff;
 }

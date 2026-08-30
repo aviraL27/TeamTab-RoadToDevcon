@@ -53,95 +53,101 @@ export default function Home() {
       <Navbar />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+      <main className="flex-1 w-full flex flex-col space-y-0">
         
         {/* Hero Banner / Problem-Solution Headline */}
-        <div className="relative rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-emerald-950/40 via-gray-900/60 to-cyan-950/40 border border-gray-800/80 backdrop-blur-xl overflow-hidden shadow-2xl">
+        <div className="relative border-b border-ml-border p-12 sm:p-24 overflow-hidden bg-ml-bg text-center min-h-[60vh] flex flex-col justify-center">
           
-          {/* Ambient Glows */}
-          <div className="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-3">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>One Pot • Zero Shared Cards • Zero Reimbursement Chases</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
-                Programmable Team Spending with <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Scoped Session Keys</span>
-              </h1>
-              <p className="text-xs sm:text-sm text-gray-300 mt-2 leading-relaxed">
-                The team lead funds one account and issues each teammate a cryptographic key scoped to a category, a ceiling, and an expiry. Every spend is tagged, receipt-backed, and gas-sponsored.
-              </p>
+          <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center justify-center w-full">
+            <div className="text-[11px] font-mono tracking-[0.2em] text-ml-beige/60 uppercase mb-8 flex items-center justify-center gap-4">
+              <span>TEAMTAB — V1</span>
+              <span className="w-12 h-[1px] bg-ml-border"></span>
+              <span>EST. 2026</span>
             </div>
-
-            {/* Quick Stats Pill */}
-            <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2 p-4 rounded-2xl bg-gray-950/60 border border-gray-800 shrink-0">
-              <div className="text-left md:text-right">
-                <div className="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">Active Pot Status</div>
-                <div className="text-xl sm:text-2xl font-black text-emerald-400 font-mono">
-                  {vault.currentBalance} <span className="text-xs text-white">/ {vault.totalDeposited} ETH</span>
-                </div>
-              </div>
-              <span className="text-[11px] text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-lg border border-cyan-500/30">
-                {vault.keys.filter(k => k.active).length} Active Spender Keys
-              </span>
+            
+            <h1 className="text-5xl sm:text-7xl lg:text-[7rem] font-display text-ml-beige leading-[0.85] tracking-tighter uppercase relative z-20">
+              PROGRAMMABLE<br/>SPENDING
+            </h1>
+            
+            <div className="mt-12 flex justify-center w-full relative z-30">
+               <div className="inline-flex items-center gap-3 px-8 py-4 border border-ml-border rounded-full hover:border-ml-beige transition-colors text-ml-beige text-xs font-mono uppercase tracking-widest bg-ml-surface/50 backdrop-blur-md cursor-pointer group">
+                  <Sparkles className="w-4 h-4 group-hover:text-ml-pink transition-colors" />
+                  <span>THE SITUATION</span>
+               </div>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <div className="mt-6 pt-5 border-t border-gray-800/80 flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-            <button
-              onClick={() => setActiveTab("dashboard")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                activeTab === "dashboard"
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-500 text-gray-950 shadow-lg shadow-emerald-500/20"
-                  : "bg-gray-950/60 hover:bg-gray-850 text-gray-300 border border-gray-800"
-              }`}
-            >
-              <Key className="w-4 h-4" />
-              <span>1. Vault & Scoped Keys</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("spend")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                activeTab === "spend"
-                  ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-gray-950 shadow-lg shadow-cyan-500/20"
-                  : "bg-gray-950/60 hover:bg-gray-850 text-gray-300 border border-gray-800"
-              }`}
-            >
-              <Send className="w-4 h-4" />
-              <span>2. Member Spend Terminal</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("feed")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                activeTab === "feed"
-                  ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/20"
-                  : "bg-gray-950/60 hover:bg-gray-850 text-gray-300 border border-gray-800"
-              }`}
-            >
-              <Receipt className="w-4 h-4" />
-              <span>3. Live Tab Feed ({vault.spends.length})</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("sandbox")}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                activeTab === "sandbox"
-                  ? "bg-gradient-to-r from-amber-500 to-orange-500 text-gray-950 shadow-lg shadow-amber-500/20"
-                  : "bg-gray-950/60 hover:bg-gray-850 text-gray-300 border border-gray-800"
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span>4. AA Policy Sandbox</span>
-            </button>
+          {/* Floating visual assets replacing neon glows */}
+          <div className="absolute top-20 left-[15%] w-40 h-24 bg-ml-bg border border-ml-border flex flex-col items-center justify-center text-[10px] font-mono text-ml-blue rotate-[-12deg] shadow-2xl hover:rotate-0 transition-transform duration-500 z-10">
+            <ShieldCheck className="w-8 h-8 mb-2" />
+            <span>[ SECURE VAULT ]</span>
+          </div>
+          
+          <div className="absolute bottom-20 right-[15%] w-32 h-32 bg-ml-yellow text-ml-bg flex flex-col items-center justify-center font-display text-4xl rotate-[15deg] shadow-2xl hover:rotate-0 transition-transform duration-500 z-10 rounded-sm">
+            <span>4337</span>
+            <span className="text-[10px] font-mono tracking-widest mt-2 uppercase">ERC Standard</span>
           </div>
 
+          <div className="absolute top-1/2 -translate-y-1/2 right-4 md:right-10 flex flex-col items-end gap-2 text-[10px] font-mono text-ml-border uppercase tracking-widest">
+             <span>||||||||||||</span>
+             <span>SCROLL DOWN</span>
+             <span>||||||||||||</span>
+          </div>
         </div>
+
+        {/* Navigation Tabs - Full Width Brutalist */}
+        <div className="border-b border-ml-border flex items-stretch overflow-x-auto scrollbar-none bg-ml-bg">
+          <button
+            onClick={() => setActiveTab("dashboard")}
+            className={`flex-1 flex items-center justify-center gap-3 px-6 py-5 text-xs font-mono uppercase tracking-widest transition-all whitespace-nowrap border-r border-ml-border ${
+              activeTab === "dashboard"
+                ? "bg-ml-beige text-ml-bg font-bold"
+                : "text-ml-beige/70 hover:bg-ml-surface hover:text-ml-beige"
+            }`}
+          >
+            <Key className="w-4 h-4" />
+            <span>Vault & Keys</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("spend")}
+            className={`flex-1 flex items-center justify-center gap-3 px-6 py-5 text-xs font-mono uppercase tracking-widest transition-all whitespace-nowrap border-r border-ml-border ${
+              activeTab === "spend"
+                ? "bg-ml-pink text-ml-bg font-bold"
+                : "text-ml-beige/70 hover:bg-ml-surface hover:text-ml-beige"
+            }`}
+          >
+            <Send className="w-4 h-4" />
+            <span>Terminal</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("feed")}
+            className={`flex-1 flex items-center justify-center gap-3 px-6 py-5 text-xs font-mono uppercase tracking-widest transition-all whitespace-nowrap border-r border-ml-border ${
+              activeTab === "feed"
+                ? "bg-ml-green text-ml-bg font-bold"
+                : "text-ml-beige/70 hover:bg-ml-surface hover:text-ml-beige"
+            }`}
+          >
+            <Receipt className="w-4 h-4" />
+            <span>Live Feed</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("sandbox")}
+            className={`flex-1 flex items-center justify-center gap-3 px-6 py-5 text-xs font-mono uppercase tracking-widest transition-all whitespace-nowrap ${
+              activeTab === "sandbox"
+                ? "bg-ml-blue text-ml-bg font-bold"
+                : "text-ml-beige/70 hover:bg-ml-surface hover:text-ml-beige"
+            }`}
+          >
+            <ShieldCheck className="w-4 h-4" />
+            <span>Sandbox</span>
+          </button>
+        </div>
+        
+        {/* Content Container */}
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Tab 1: Dashboard View (Vault Stats + Keys Manager) */}
         {activeTab === "dashboard" && (
@@ -186,35 +192,35 @@ export default function Home() {
           </div>
         )}
 
+        </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800/80 bg-gray-950/70 py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-emerald-400">
+      <footer className="border-t border-ml-border bg-ml-bg py-12 mt-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-ml-beige/60 font-mono">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 border border-ml-border flex items-center justify-center font-bold text-ml-beige">
               TT
             </div>
             <div>
-              <div className="font-bold text-white">TeamTab • ROAD TO DEVCON – IIITN EDITION</div>
-              <div className="text-[11px] text-gray-500">Ethereum Research Workshop & Builders Lab • IIIT Nagpur × Bhaisaaab</div>
+              <div className="font-bold text-ml-beige uppercase tracking-wider">TEAMTAB — DEVCON</div>
+              <div className="text-[10px]">Ethereum Research Workshop</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-xs">
-            <span className="flex items-center gap-1 text-emerald-400 font-mono">
-              <Zap className="w-3.5 h-3.5" />
-              <span>ERC-4337 Session Keys</span>
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-ml-yellow" />
+              <span>ERC-4337 READY</span>
             </span>
-            <span>•</span>
             <a
               href="https://github.com/aviraL27/TeamTab-RoadToDevcon"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-white flex items-center gap-1"
+              className="text-ml-beige hover:text-ml-pink transition-colors flex items-center gap-2"
             >
-              <span>GitHub Repo</span>
-              <ExternalLink className="w-3.5 h-3.5" />
+              <span>SOURCE</span>
+              <ExternalLink className="w-4 h-4" />
             </a>
           </div>
         </div>

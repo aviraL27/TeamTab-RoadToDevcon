@@ -42,26 +42,28 @@ export function MemberKeysManager({ onOpenIssueModal, onOpenShareModal }: Member
   };
 
   return (
-    <div className="rounded-3xl bg-gray-900/80 border border-gray-800/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl">
+    <div className="bg-ml-bg border border-ml-border p-8 sm:p-12 relative overflow-hidden mt-8">
       
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-800">
+      {/* Top Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-ml-border">
         <div>
-          <div className="flex items-center gap-2">
-            <Key className="w-5 h-5 text-emerald-400" />
-            <h3 className="text-lg sm:text-xl font-bold text-white">
-              Issued Session Keys & Scoped Permissions
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 border border-ml-border flex items-center justify-center bg-ml-blue text-ml-bg">
+              <Key className="w-4 h-4 fill-current" />
+            </div>
+            <h3 className="text-xl sm:text-2xl font-display text-ml-beige uppercase tracking-tight mt-1">
+              Active Keys
             </h3>
           </div>
-          <p className="text-xs text-gray-400 mt-1">
-            ERC-4337 session keys grant members autonomous spending authority bounded by ceiling and category.
+          <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 mt-3 uppercase">
+            Manage scoped session keys for the team pot.
           </p>
         </div>
 
         {currentRole === "lead" && (
           <button
             onClick={onOpenIssueModal}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-400 text-xs font-bold transition-colors shrink-0"
+            className="flex items-center gap-2 px-6 py-3 border border-ml-beige text-ml-beige hover:bg-ml-beige hover:text-ml-bg text-[10px] font-mono font-bold uppercase tracking-widest transition-colors"
           >
             <Plus className="w-4 h-4" />
             <span>Issue New Key</span>
@@ -70,135 +72,131 @@ export function MemberKeysManager({ onOpenIssueModal, onOpenShareModal }: Member
       </div>
 
       {/* Keys Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        {vault.keys.map((k) => {
-          const catMeta = getCategoryMeta(k.category);
-          const spent = parseFloat(k.spent);
-          const ceiling = parseFloat(k.ceiling);
-          const remaining = Math.max(0, ceiling - spent).toFixed(2);
-          const percentUsed = ceiling > 0 ? Math.min(100, Math.round((spent / ceiling) * 100)) : 0;
-          const isSelected = currentRole === "spender" && activeMemberAddress.toLowerCase() === k.member.toLowerCase();
+      <div className="mt-8 space-y-4">
+        {vault.keys.length === 0 ? (
+          <div className="text-center py-12 border border-ml-border border-dashed text-ml-beige/40 text-[10px] font-mono uppercase tracking-widest">
+            No session keys issued yet.
+          </div>
+        ) : (
+          vault.keys.map((key) => {
+            const numCeiling = parseFloat(key.ceiling) || 0;
+            const numSpent = parseFloat(key.spent) || 0;
+            const percentSpent = numCeiling > 0 ? Math.min(100, (numSpent / numCeiling) * 100) : 0;
+            const isSelected = currentRole === "spender" && activeMemberAddress.toLowerCase() === key.member.toLowerCase();
+            
+            return (
+              <div
+                key={key.member}
+                className={`p-4 sm:p-6 border transition-all flex flex-col md:flex-row gap-6 relative ${
+                  key.active
+                    ? "bg-ml-surface border-ml-border"
+                    : "bg-ml-bg border-ml-border/50 opacity-60 grayscale"
+                }`}
+              >
 
-          return (
-            <div
-              key={k.member}
-              className={`rounded-2xl p-5 border transition-all relative overflow-hidden flex flex-col justify-between ${
-                !k.active
-                  ? "bg-gray-950/40 border-gray-800/50 opacity-60"
-                  : isSelected
-                  ? "bg-cyan-950/20 border-cyan-500/50 shadow-lg shadow-cyan-950/50"
-                  : "bg-gray-950/60 border-gray-800/80 hover:border-gray-700"
-              }`}
-            >
-              <div>
-                {/* Top Row: User Avatar, Name & Category Badge */}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={k.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"}
-                      alt={k.memberName}
-                      className="w-10 h-10 rounded-xl object-cover border border-gray-700 shrink-0"
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-white">{k.memberName}</span>
-                        {k.active ? (
-                          <span className="w-2 h-2 rounded-full bg-emerald-400" title="Active Key" />
-                        ) : (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 font-semibold">Revoked</span>
-                        )}
-                      </div>
-                      <div className="text-[11px] text-gray-400 font-mono">
-                        {k.member.slice(0, 6)}...{k.member.slice(-4)}
-                      </div>
-                    </div>
+
+                {/* Left: Member Identity */}
+                <div className="flex items-center gap-4 min-w-[200px]">
+                  <img
+                    src={key.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"}
+                    alt={key.memberName}
+                    className="w-12 h-12 border border-ml-border object-cover grayscale"
+                  />
+                  <div>
+                    <h4 className="font-bold text-ml-beige uppercase tracking-widest text-sm">{key.memberName}</h4>
+                    <p className="text-[10px] text-ml-beige/60 font-mono uppercase tracking-widest mt-1">
+                      {key.member.slice(0, 6)}...{key.member.slice(-4)}
+                    </p>
                   </div>
-
-                  {/* Category Pill */}
-                  <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg border ${catMeta.color} shrink-0`}>
-                    {k.category}
-                  </span>
                 </div>
 
-                {/* Allowance Metrics */}
-                <div className="mt-4 pt-3 border-t border-gray-800/60">
-                  <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="text-gray-400">Allowance Used:</span>
-                    <span className="font-semibold text-white font-mono">
-                      {k.spent} / {k.ceiling} ETH
-                    </span>
-                  </div>
-
-                  {/* Progress Bar */}
-                  <div className="w-full h-2 rounded-full bg-gray-900 overflow-hidden border border-gray-800">
-                    <div
-                      className={`h-full rounded-full transition-all ${
-                        percentUsed > 80
-                          ? "bg-rose-500"
-                          : percentUsed > 50
-                          ? "bg-amber-400"
-                          : "bg-emerald-400"
-                      }`}
-                      style={{ width: `${percentUsed}%` }}
-                    />
-                  </div>
-
-                  {/* Limits summary */}
-                  <div className="flex items-center justify-between text-[11px] text-gray-400 mt-3 font-mono">
+                {/* Center: Scopes & Budget */}
+                <div className="flex-1 space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span>Remaining: </span>
-                      <strong className="text-emerald-400">{remaining} ETH</strong>
+                      <span className="text-[9px] font-mono tracking-widest text-ml-beige/40 uppercase block mb-1">
+                        Allowed Category
+                      </span>
+                      <span className="text-[10px] font-mono uppercase tracking-widest border border-ml-blue/30 text-ml-blue px-2 py-1">
+                        {key.category}
+                      </span>
                     </div>
                     <div>
-                      <span>Single Tx Cap: </span>
-                      <strong className="text-cyan-400">{k.singleTxLimit} ETH</strong>
+                      <span className="text-[9px] font-mono tracking-widest text-ml-beige/40 uppercase block mb-1">
+                        Single Tx Limit
+                      </span>
+                      <span className="text-xs font-mono font-bold text-ml-beige">
+                        {key.singleTxLimit} ETH
+                      </span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mb-2">
+                      <span>Total Allowance Used</span>
+                      <span className="text-ml-beige font-bold">
+                        {key.spent} / {key.ceiling} ETH
+                      </span>
+                    </div>
+                    <div className="w-full h-2 border border-ml-border bg-ml-bg p-0.5">
+                      <div
+                        className={`h-full transition-all duration-500 ${
+                          percentSpent > 90 ? "bg-ml-pink" : "bg-ml-blue"
+                        }`}
+                        style={{ width: `${percentSpent}%` }}
+                      />
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center justify-between gap-2 mt-5 pt-3 border-t border-gray-800/60">
-                <button
-                  onClick={() => onOpenShareModal(k)}
-                  className="flex items-center gap-1.5 text-xs text-gray-300 hover:text-white px-2.5 py-1.5 rounded-lg bg-gray-800/70 hover:bg-gray-700/70 transition-colors"
-                  title="Share Key Link & QR Pass"
-                >
-                  <QrCode className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Pass</span>
-                </button>
-
-                <div className="flex items-center gap-2">
-                  {k.active && currentRole === "lead" && (
+                {/* Right: Actions */}
+                <div className="flex flex-col items-center justify-start gap-3 pt-4 md:pt-0 md:pl-4 border-t md:border-t-0 md:border-l border-ml-border min-w-[140px]">
+                  {/* Status Indicator */}
+                  <div className="flex items-center gap-2 mb-2 w-full justify-center">
+                    {key.active ? (
+                      <span className="flex items-center gap-1.5 text-[9px] font-mono tracking-widest text-ml-green uppercase border border-ml-green/30 bg-ml-green/10 px-2 py-1 w-full justify-center">
+                        <CheckCircle2 className="w-3 h-3" />
+                        <span>Active Key</span>
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1.5 text-[9px] font-mono tracking-widest text-ml-pink uppercase border border-ml-pink/30 bg-ml-pink/10 px-2 py-1 w-full justify-center">
+                        <XCircle className="w-3 h-3" />
+                        <span>Revoked</span>
+                      </span>
+                    )}
+                  </div>
+                  {key.active && currentRole === "lead" && (
                     <button
-                      onClick={() => handleRevoke(k.member)}
-                      disabled={revokingMember === k.member}
-                      className="text-xs text-rose-400 hover:text-rose-300 px-2.5 py-1.5 rounded-lg hover:bg-rose-500/10 transition-colors"
-                      title="Revoke session key immediately"
+                      onClick={() => handleRevoke(key.member)}
+                      disabled={revokingMember === key.member}
+                      className="px-4 py-2 border border-ml-pink text-[9px] font-mono uppercase tracking-widest text-ml-pink hover:bg-ml-pink hover:text-ml-bg transition-colors w-full"
                     >
-                      {revokingMember === k.member ? "Revoking..." : "Revoke"}
+                      {revokingMember === key.member ? "Revoking..." : "Revoke Key"}
                     </button>
                   )}
-
-                  {k.active && (
+                  {key.active && (
                     <button
-                      onClick={() => handleSwitchToMember(k.member)}
-                      className={`flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg transition-all ${
-                        isSelected
-                          ? "bg-cyan-500 text-gray-950"
-                          : "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30"
+                      onClick={() => handleSwitchToMember(key.member)}
+                      className={`px-4 py-2 text-[9px] font-mono uppercase tracking-widest w-full flex items-center justify-between gap-2 border transition-all ${
+                        isSelected ? "bg-ml-beige text-ml-bg border-ml-beige" : "bg-ml-surface border-ml-border text-ml-beige hover:border-ml-beige"
                       }`}
                     >
-                      <span>{isSelected ? "Active Spender" : "Spend as " + k.memberName.split(" ")[0]}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span>{isSelected ? "Active Spender" : "Spend As"}</span>
+                      <ArrowRight className="w-3 h-3" />
                     </button>
                   )}
+                  <button
+                    onClick={() => onOpenShareModal(key)}
+                    className="flex items-center gap-2 text-[9px] font-mono tracking-widest text-ml-beige/60 hover:text-ml-beige transition-colors uppercase mt-2"
+                  >
+                    <QrCode className="w-3 h-3" />
+                    <span>Pass</span>
+                  </button>
                 </div>
               </div>
-
-            </div>
           );
-        })}
+          })
+        )}
       </div>
 
     </div>

@@ -131,34 +131,36 @@ export function SpendTerminal() {
   const isCategoryInvalid = activeKey && activeKey.category !== "All" && activeKey.category !== category;
 
   return (
-    <div className="rounded-3xl bg-gray-900/80 border border-gray-800/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl">
+    <div className="bg-ml-bg border border-ml-border p-8 sm:p-12 relative overflow-hidden">
       
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-ml-border">
         <div>
-          <div className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-emerald-400 fill-emerald-400" />
-            <h3 className="text-lg sm:text-xl font-bold text-white">
-              Member Spending Terminal
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 border border-ml-border flex items-center justify-center bg-ml-pink text-ml-bg">
+              <Zap className="w-4 h-4 fill-current" />
+            </div>
+            <h3 className="text-xl sm:text-2xl font-display text-ml-beige uppercase tracking-tight mt-1">
+              Terminal
             </h3>
           </div>
-          <p className="text-xs text-gray-400 mt-1">
-            Spend autonomously from the team pot using your scoped session key. Zero personal gas required.
+          <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 mt-3 uppercase">
+            Execute gasless spends via AA session key.
           </p>
         </div>
 
         {/* Active Key Info Badge */}
         {activeKey && (
-          <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-gray-950/70 border border-cyan-500/30 text-xs">
+          <div className="flex items-center gap-4 px-4 py-3 border border-ml-border bg-ml-surface">
             <img
               src={activeKey.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"}
               alt={activeKey.memberName}
-              className="w-6 h-6 rounded-full object-cover"
+              className="w-10 h-10 border border-ml-border object-cover grayscale opacity-80"
             />
             <div>
-              <span className="font-bold text-white">{activeKey.memberName}</span>
-              <span className="text-gray-400 text-[11px] block">
-                Scoped: <strong className="text-cyan-400">{activeKey.category}</strong> (Rem: {remainingAllowance.toFixed(2)} ETH)
+              <span className="font-bold text-ml-beige text-xs uppercase tracking-widest">{activeKey.memberName}</span>
+              <span className="text-ml-beige/60 text-[10px] font-mono uppercase block mt-1">
+                Scoped: <strong className="text-ml-blue">{activeKey.category}</strong> (Rem: {remainingAllowance.toFixed(2)} ETH)
               </span>
             </div>
           </div>
@@ -166,48 +168,48 @@ export function SpendTerminal() {
       </div>
 
       {/* Quick Vendor Shortcuts */}
-      <div className="mt-5">
-        <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 block mb-2">
-          ⚡ Quick Vendor Presets
+      <div className="mt-8">
+        <label className="text-[10px] font-mono uppercase tracking-widest text-ml-beige/60 block mb-4">
+          Quick Presets
         </label>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {quickVendors.map((v) => (
             <button
               key={v.name}
               type="button"
               onClick={() => handleSelectVendor(v)}
-              className="p-2.5 rounded-xl bg-gray-950/50 hover:bg-gray-850 border border-gray-800 hover:border-emerald-500/40 text-left transition-all text-xs group"
+              className="p-4 border border-ml-border bg-ml-surface hover:border-ml-beige transition-all text-left group"
             >
-              <div className="font-bold text-white group-hover:text-emerald-300 truncate">{v.name}</div>
-              <div className="text-[10px] text-gray-400 truncate">{v.cat}</div>
-              <div className="text-[10px] font-mono text-emerald-400 mt-1 font-semibold">{v.defaultAmount} ETH</div>
+              <div className="font-bold text-ml-beige text-xs uppercase tracking-widest group-hover:text-ml-pink truncate">{v.name}</div>
+              <div className="text-[10px] text-ml-beige/50 font-mono truncate mt-2">{v.cat}</div>
+              <div className="text-[10px] font-mono text-ml-green mt-2 pt-2 border-t border-ml-border">{v.defaultAmount} ETH</div>
             </button>
           ))}
         </div>
       </div>
 
       {/* Spend Form */}
-      <form onSubmit={handleExecute} className="mt-6 space-y-4">
+      <form onSubmit={handleExecute} className="mt-8 space-y-6">
         
         {/* Recipient & Merchant */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1.5">
-              Merchant / Recipient Name
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+              Merchant Name
             </label>
             <input
               type="text"
               required
               value={recipientName}
               onChange={(e) => setRecipientName(e.target.value)}
-              placeholder="e.g. OpenAI, AWS, Devcon Cafe"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950/70 border border-gray-800 focus:border-emerald-500 text-sm text-white focus:outline-none transition-colors"
+              placeholder="e.g. OpenAI, AWS"
+              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige focus:outline-none transition-colors font-mono uppercase"
             />
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1.5">
-              Recipient Ethereum Address
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+              Recipient Address
             </label>
             <input
               type="text"
@@ -215,18 +217,18 @@ export function SpendTerminal() {
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
               placeholder="0x..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950/70 border border-gray-800 focus:border-emerald-500 text-sm font-mono text-white focus:outline-none transition-colors"
+              className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige focus:outline-none transition-colors font-mono"
             />
           </div>
         </div>
 
         {/* Amount & Category */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1.5 flex items-center justify-between">
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2 flex items-center justify-between">
               <span>Amount (ETH)</span>
-              <span className="text-[11px] text-gray-400 font-mono">
-                ≈ ${(numAmount * 3000).toLocaleString()} USD
+              <span>
+                ≈ ${(numAmount * 3000).toLocaleString()}
               </span>
             </label>
             <div className="relative">
@@ -238,51 +240,51 @@ export function SpendTerminal() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
-                className={`w-full px-3.5 py-2.5 rounded-xl bg-gray-950/70 border text-sm font-mono font-bold text-white focus:outline-none transition-colors ${
-                  exceedsCeiling || exceedsSingle ? "border-rose-500 focus:border-rose-500 text-rose-300" : "border-gray-800 focus:border-emerald-500"
+                className={`w-full px-4 py-3 bg-ml-surface border text-sm font-mono font-bold text-ml-beige focus:outline-none transition-colors ${
+                  exceedsCeiling || exceedsSingle ? "border-ml-pink text-ml-pink" : "border-ml-border focus:border-ml-beige"
                 }`}
               />
-              <span className="absolute right-3.5 top-2.5 text-xs font-bold text-gray-400 font-mono">
+              <span className="absolute right-4 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
                 ETH
               </span>
             </div>
             
             {/* Warning if amount exceeds single limit or ceiling */}
             {exceedsSingle && (
-              <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>Exceeds single tx cap ({singleLimit} ETH)</span>
+              <p className="text-[10px] text-ml-pink mt-2 font-mono uppercase flex items-center gap-2">
+                <AlertCircle className="w-3 h-3" />
+                <span>Exceeds cap ({singleLimit} ETH)</span>
               </p>
             )}
             {exceedsCeiling && !exceedsSingle && (
-              <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>Exceeds remaining allowance ({remainingAllowance.toFixed(2)} ETH)</span>
+              <p className="text-[10px] text-ml-pink mt-2 font-mono uppercase flex items-center gap-2">
+                <AlertCircle className="w-3 h-3" />
+                <span>Exceeds allowance ({remainingAllowance.toFixed(2)} ETH)</span>
               </p>
             )}
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1.5">
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
               Expense Category
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className={`w-full px-3.5 py-2.5 rounded-xl bg-gray-950/70 border text-sm text-white focus:outline-none transition-colors ${
-                isCategoryInvalid ? "border-amber-500 text-amber-300" : "border-gray-800 focus:border-emerald-500"
+              className={`w-full px-4 py-3 bg-ml-surface border text-xs font-mono uppercase tracking-widest text-ml-beige focus:outline-none transition-colors appearance-none ${
+                isCategoryInvalid ? "border-ml-yellow text-ml-yellow" : "border-ml-border focus:border-ml-beige"
               }`}
             >
               {CATEGORY_OPTIONS.map((c) => (
-                <option key={c.value} value={c.value} className="bg-gray-900 text-white">
+                <option key={c.value} value={c.value} className="bg-ml-bg text-ml-beige">
                   {c.label}
                 </option>
               ))}
             </select>
             {isCategoryInvalid && (
-              <p className="text-[11px] text-amber-400 mt-1 flex items-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>Key is authorized for '{activeKey.category}'. Policy will reject.</span>
+              <p className="text-[10px] text-ml-yellow mt-2 font-mono uppercase flex items-center gap-2">
+                <AlertCircle className="w-3 h-3" />
+                <span>Key authorized for '{activeKey.category}'.</span>
               </p>
             )}
           </div>
@@ -290,40 +292,40 @@ export function SpendTerminal() {
 
         {/* Purpose Memo */}
         <div>
-          <label className="text-xs font-semibold text-gray-300 block mb-1.5">
-            Expense Purpose / Memo (Tagged on-chain)
+          <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
+            Expense Purpose
           </label>
           <input
             type="text"
             required
             value={purpose}
             onChange={(e) => setPurpose(e.target.value)}
-            placeholder="e.g. OpenAI GPT-4o API Batch Credits for RAG Pipeline"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950/70 border border-gray-800 focus:border-emerald-500 text-sm text-white focus:outline-none transition-colors"
+            placeholder="e.g. Batch Credits for RAG Pipeline"
+            className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige font-mono focus:outline-none transition-colors uppercase"
           />
         </div>
 
         {/* Gas Sponsorship Breakdown */}
-        <div className="p-3.5 rounded-2xl bg-emerald-950/30 border border-emerald-500/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="p-4 border border-ml-green bg-ml-green/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs font-mono">
+          <div className="flex items-center gap-3">
+            <Sparkles className="w-5 h-5 text-ml-green shrink-0" />
             <div>
-              <span className="font-bold text-white">ERC-4337 Gas Sponsorship</span>
-              <span className="text-gray-400 block text-[11px]">
-                Network gas fee is 100% sponsored by the TeamTab Paymaster.
+              <span className="font-bold text-ml-green uppercase">Sponsorship</span>
+              <span className="text-ml-beige/60 block text-[10px] uppercase mt-1">
+                Gas paid by Paymaster
               </span>
             </div>
           </div>
           <div className="text-right shrink-0">
-            <span className="text-gray-400 line-through text-[11px] mr-1.5">0.0021 ETH ($6.30)</span>
-            <span className="text-emerald-400 font-bold font-mono">0.00 ETH ($0.00)</span>
+            <span className="text-ml-beige/40 line-through text-[10px] mr-2">0.0021 ETH</span>
+            <span className="text-ml-green font-bold bg-ml-green/20 px-2 py-1">0.00 ETH</span>
           </div>
         </div>
 
         {/* Error Feedback */}
         {executionError && (
-          <div className="p-3 rounded-xl bg-rose-950/80 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+          <div className="p-4 bg-ml-pink/10 border border-ml-pink text-ml-pink text-[10px] font-mono uppercase flex items-start gap-3">
+            <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{executionError}</span>
           </div>
         )}
@@ -332,22 +334,22 @@ export function SpendTerminal() {
         <button
           type="submit"
           disabled={isExecuting || !activeKey || !activeKey.active}
-          className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-gray-950 font-black text-sm shadow-xl shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+          className="w-full py-5 bg-ml-bg border border-ml-border hover:bg-ml-surface hover:border-ml-beige text-ml-beige font-display text-sm uppercase tracking-widest transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
         >
           {isExecuting ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin text-gray-950" />
+              <Loader2 className="w-4 h-4 animate-spin text-ml-beige" />
               <span>
-                {executionStep === 1 && "Building UserOperation..."}
-                {executionStep === 2 && "Signing with Scoped Session Key..."}
-                {executionStep === 3 && "Paymaster Sponsoring Gas & Submitting..."}
-                {executionStep === 4 && "✅ Transaction Confirmed on Vault!"}
+                {executionStep === 1 && "Building UserOp..."}
+                {executionStep === 2 && "Signing..."}
+                {executionStep === 3 && "Sponsoring..."}
+                {executionStep === 4 && "Confirmed!"}
               </span>
             </>
           ) : (
             <>
-              <Send className="w-4 h-4" />
-              <span>⚡ Execute Gasless Spend ({amount} ETH)</span>
+              <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <span>Execute Spend ({amount} ETH)</span>
             </>
           )}
         </button>

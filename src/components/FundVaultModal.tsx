@@ -29,34 +29,34 @@ export function FundVaultModal({ isOpen, onClose }: FundVaultModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-md rounded-3xl bg-gray-900 border border-gray-700 shadow-2xl p-6 sm:p-8 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ml-bg/90 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-md bg-ml-bg border border-ml-border p-8 relative shadow-2xl">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-2 bg-ml-surface border border-ml-border hover:bg-ml-beige hover:text-ml-bg text-ml-beige transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Header */}
-        <div className="flex items-center gap-2.5 pb-4 border-b border-gray-800">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
-            <ArrowDownLeft className="w-5 h-5" />
+        <div className="flex items-center gap-4 pb-6 border-b border-ml-border">
+          <div className="w-12 h-12 border border-ml-border flex items-center justify-center bg-ml-green text-ml-bg">
+            <ArrowDownLeft className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white">Deposit into Team Pot</h3>
-            <p className="text-xs text-gray-400">
-              Add shared funds to "{vault.teamName}" vault.
+            <h3 className="text-xl font-display text-ml-beige uppercase tracking-tight">Deposit Pot</h3>
+            <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mt-1">
+              Add funds to {vault.teamName}.
             </p>
           </div>
         </div>
 
         {/* Quick Amount Buttons */}
-        <div className="mt-5">
-          <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 block mb-2">
-            Quick Preset Amounts
+        <div className="mt-6">
+          <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-3">
+            Quick Presets
           </label>
           <div className="grid grid-cols-4 gap-2">
             {quickPots.map((preset) => (
@@ -64,22 +64,22 @@ export function FundVaultModal({ isOpen, onClose }: FundVaultModalProps) {
                 key={preset}
                 type="button"
                 onClick={() => setAmount(preset)}
-                className={`py-2 rounded-xl text-xs font-mono font-bold transition-all ${
+                className={`py-3 border text-xs font-mono font-bold transition-all ${
                   amount === preset
-                    ? "bg-emerald-500 text-gray-950 shadow-md shadow-emerald-500/20"
-                    : "bg-gray-950 border border-gray-800 text-gray-300 hover:border-gray-700"
+                    ? "bg-ml-green border-ml-green text-ml-bg"
+                    : "bg-ml-surface border-ml-border text-ml-beige hover:border-ml-beige"
                 }`}
               >
-                +{preset} ETH
+                +{preset}
               </button>
             ))}
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">
+            <label className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase block mb-2">
               Deposit Amount (ETH)
             </label>
             <div className="relative">
@@ -91,30 +91,30 @@ export function FundVaultModal({ isOpen, onClose }: FundVaultModalProps) {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="1.0"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-sm font-mono font-bold text-white focus:outline-none"
+                className="w-full px-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-sm font-mono font-bold text-ml-beige focus:outline-none transition-colors"
               />
-              <span className="absolute right-3.5 top-2.5 text-xs font-bold text-gray-400 font-mono">
+              <span className="absolute right-4 top-3.5 text-[10px] font-bold text-ml-beige/60 font-mono">
                 ETH
               </span>
             </div>
-            <div className="text-[11px] text-gray-400 mt-1">
+            <div className="text-[10px] font-mono tracking-widest text-ml-beige/60 mt-2">
               ≈ ${(parseFloat(amount || "0") * 3000).toLocaleString()} USD
             </div>
           </div>
 
           {/* Actions */}
-          <div className="pt-3 flex items-center justify-end gap-3">
+          <div className="pt-4 flex items-center justify-end gap-4">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300"
+              className="px-6 py-3 border border-ml-border hover:bg-ml-surface text-[10px] font-mono uppercase tracking-widest text-ml-beige transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-gray-950 font-bold text-xs shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+              className="px-6 py-3 bg-ml-green border border-ml-green text-ml-bg hover:bg-transparent hover:text-ml-green text-[10px] font-mono uppercase tracking-widest transition-colors disabled:opacity-50"
             >
               {isSubmitting ? "Depositing..." : "Confirm Deposit"}
             </button>

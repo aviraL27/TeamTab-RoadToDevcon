@@ -13,88 +13,82 @@ export function ReceiptViewerModal({ spend, onClose }: ReceiptViewerModalProps) 
   if (!spend) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-lg rounded-3xl bg-gray-900 border border-gray-700 shadow-2xl p-6 sm:p-8 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ml-bg/90 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-lg bg-ml-bg border border-ml-border p-8 relative shadow-2xl">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-2 bg-ml-surface border border-ml-border hover:bg-ml-beige hover:text-ml-bg text-ml-beige transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
-        {/* Title */}
-        <div className="flex items-center gap-2.5 pb-4 border-b border-gray-800">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
-            <FileText className="w-5 h-5" />
+        {/* Header */}
+        <div className="flex items-center gap-4 pb-6 border-b border-ml-border">
+          <div className="w-12 h-12 border border-ml-border flex items-center justify-center bg-ml-pink text-ml-bg">
+            <FileText className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white">Expense Receipt & Proof</h3>
-            <p className="text-xs text-gray-400">
-              Verifiable proof anchored to on-chain tagged spend #{spend.id}.
+            <h3 className="text-xl font-display text-ml-beige uppercase tracking-tight">Receipt Proof</h3>
+            <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mt-1">
+              Verifiable proof for spend #{spend.id}.
             </p>
           </div>
         </div>
 
         {/* Receipt Image */}
-        <div className="mt-4 rounded-2xl overflow-hidden border border-gray-800 max-h-56 bg-black relative">
+        <div className="mt-6 border border-ml-border max-h-56 bg-ml-surface relative overflow-hidden group">
           <img
             src={spend.receiptImage || "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600"}
             alt="Receipt Proof"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
           />
-          <div className="absolute bottom-2 right-2 px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md text-[10px] font-mono text-cyan-300 border border-cyan-500/30">
+          <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-ml-bg border border-ml-border text-[9px] font-mono text-ml-beige uppercase tracking-widest">
             IPFS: {spend.receiptHash.slice(0, 16)}...
           </div>
         </div>
 
         {/* Details Grid */}
-        <div className="mt-4 space-y-2.5 text-xs">
-          <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-950/70 border border-gray-800">
-            <span className="text-gray-400 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Spender:</span>
-            </span>
-            <span className="font-bold text-white">{spend.memberName}</span>
+        <div className="mt-6 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-ml-border bg-ml-surface gap-2">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-ml-beige/60">Spender</span>
+            <span className="font-bold text-sm text-ml-beige uppercase tracking-widest">{spend.memberName}</span>
           </div>
 
-          <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-950/70 border border-gray-800">
-            <span className="text-gray-400 flex items-center gap-1.5">
-              <Tag className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Category & Item:</span>
-            </span>
-            <span className="font-semibold text-gray-200">{spend.category}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-ml-border bg-ml-surface gap-2">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-ml-beige/60">Category</span>
+            <span className="text-[10px] font-mono uppercase tracking-widest text-ml-blue border border-ml-blue/30 px-2 py-1 bg-ml-blue/10">{spend.category}</span>
           </div>
 
-          <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-950/70 border border-gray-800">
-            <span className="text-gray-400">Purpose:</span>
-            <span className="text-white max-w-[260px] text-right truncate">"{spend.purpose}"</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-ml-border bg-ml-surface gap-2">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-ml-beige/60">Purpose</span>
+            <span className="text-xs text-ml-beige text-right truncate font-mono uppercase">"{spend.purpose}"</span>
           </div>
 
-          <div className="flex items-center justify-between p-2.5 rounded-xl bg-gray-950/70 border border-gray-800">
-            <span className="text-gray-400">Total Deducted:</span>
-            <span className="font-black text-white font-mono">
-              -{spend.amount} ETH <span className="text-gray-400 font-normal">(${(parseFloat(spend.amount) * 3000).toLocaleString()})</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-ml-border bg-ml-surface gap-2">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-ml-beige/60">Total Deducted</span>
+            <span className="font-display text-xl text-ml-pink">
+              -{spend.amount} ETH
             </span>
           </div>
         </div>
 
         {/* Tx Hash Link */}
-        <div className="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between">
+        <div className="mt-8 pt-4 border-t border-ml-border flex items-center justify-between">
           <a
             href={`https://sepolia.etherscan.io/tx/${spend.txHash}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-mono"
+            className="text-[9px] font-mono uppercase tracking-widest text-ml-beige/60 hover:text-ml-beige flex items-center gap-2 transition-colors"
           >
-            <span>View on Sepolia Etherscan</span>
-            <ExternalLink className="w-3.5 h-3.5" />
+            <span>View on Etherscan</span>
+            <ExternalLink className="w-3 h-3" />
           </a>
 
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-200"
+            className="px-6 py-3 border border-ml-border hover:bg-ml-surface text-[10px] font-mono uppercase tracking-widest text-ml-beige transition-colors"
           >
             Close
           </button>

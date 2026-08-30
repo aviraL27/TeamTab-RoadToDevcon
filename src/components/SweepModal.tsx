@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useTeamTab } from "@/lib/store";
-import { X, ArrowUpRight, AlertTriangle, ShieldCheck } from "lucide-react";
+import { X, ArrowUpRight, AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
 
 interface SweepModalProps {
   isOpen: boolean;
@@ -27,74 +27,76 @@ export function SweepModal({ isOpen, onClose }: SweepModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in">
-      <div className="w-full max-w-md rounded-3xl bg-gray-900 border border-gray-700 shadow-2xl p-6 sm:p-8 relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ml-bg/90 backdrop-blur-sm animate-in fade-in">
+      <div className="w-full max-w-md bg-ml-bg border border-ml-border p-8 relative shadow-2xl">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 p-2 bg-ml-surface border border-ml-border hover:bg-ml-beige hover:text-ml-bg text-ml-beige transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
-        {/* Title */}
-        <div className="flex items-center gap-2.5 pb-4 border-b border-gray-800">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
-            <ArrowUpRight className="w-5 h-5" />
+        {/* Header */}
+        <div className="flex items-center gap-4 pb-6 border-b border-ml-border">
+          <div className="w-12 h-12 border border-ml-border flex items-center justify-center bg-ml-pink text-ml-bg">
+            <ArrowUpRight className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-white">Sweep Unspent Pot to Lead</h3>
-            <p className="text-xs text-gray-400">
-              Recover unspent funds from the team tab vault back to team lead.
+            <h3 className="text-xl font-display text-ml-beige uppercase tracking-tight">Sweep Pot</h3>
+            <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mt-1">
+              Reclaim unspent funds.
             </p>
           </div>
         </div>
 
-        {/* Balance Notice */}
-        <div className="mt-4 p-4 rounded-2xl bg-gray-950 border border-gray-800 text-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-400">Available Pot to Sweep:</span>
-            <span className="text-base font-black text-white font-mono">{vault.currentBalance} ETH</span>
+        {/* Context Info */}
+        <div className="mt-6 p-4 border border-ml-pink bg-ml-pink/5 space-y-4">
+          <div className="flex items-start gap-3 text-[10px] font-mono uppercase tracking-widest text-ml-pink">
+            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold">End of Event / Revoke All</p>
+              <p className="opacity-80 mt-1">
+                This action will sweep the remaining balance of <strong className="font-display text-xs">{vault.currentBalance} ETH</strong> back to your address.
+              </p>
+            </div>
           </div>
-          <p className="text-[11px] text-gray-400 mt-1">
-            All remaining unspent authority from active member keys will be securely returned.
-          </p>
+          <div className="pt-3 border-t border-ml-pink/20">
+            <label className="text-[10px] font-mono tracking-widest text-ml-pink/60 uppercase block mb-1">
+              Destination Address
+            </label>
+            <div className="font-mono text-xs text-ml-pink break-all">
+              {vault.lead}
+            </div>
+          </div>
         </div>
 
-        <form onSubmit={handleSweep} className="mt-4 space-y-4">
-          <div>
-            <label className="text-xs font-semibold text-gray-300 block mb-1">
-              Reason / Memo
-            </label>
-            <input
-              type="text"
-              required
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              placeholder="e.g. Hackathon Concluded / Event Ended"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-emerald-500 text-xs text-white focus:outline-none"
-            />
-          </div>
-
-          <div className="pt-2 flex items-center justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-xs font-semibold text-gray-300"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting || parseFloat(vault.currentBalance) <= 0}
-              className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-gray-950 font-bold text-xs shadow-lg shadow-amber-500/20 disabled:opacity-50"
-            >
-              {isSubmitting ? "Sweeping Funds..." : "Confirm Sweep"}
-            </button>
-          </div>
-        </form>
-
+        {/* Actions */}
+        <div className="mt-8 pt-4 flex items-center justify-end gap-4 border-t border-ml-border">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={isSubmitting}
+            className="px-6 py-3 border border-ml-border hover:bg-ml-surface text-[10px] font-mono uppercase tracking-widest text-ml-beige transition-colors disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSweep}
+            disabled={isSubmitting}
+            className="px-6 py-3 bg-ml-pink border border-ml-pink text-ml-bg hover:bg-transparent hover:text-ml-pink text-[10px] font-mono uppercase tracking-widest transition-colors disabled:opacity-50 flex items-center gap-2"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Sweeping...</span>
+              </>
+            ) : (
+              <span>Sweep {vault.currentBalance} ETH</span>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

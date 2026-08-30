@@ -79,90 +79,92 @@ export function AAPolicyInspector() {
   ];
 
   return (
-    <div className="rounded-3xl bg-gray-900/80 border border-gray-800/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl">
+    <div className="bg-ml-bg border border-ml-border p-8 sm:p-12 relative overflow-hidden mt-8">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-ml-border">
         <div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            <h3 className="text-lg sm:text-xl font-bold text-white">
-              ERC-4337 Policy Sandbox & Security Inspector
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 border border-ml-border flex items-center justify-center bg-ml-pink text-ml-bg">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <h3 className="text-xl sm:text-2xl font-display text-ml-beige uppercase tracking-tight mt-1">
+              Policy Sandbox
             </h3>
           </div>
-          <p className="text-xs text-gray-400 mt-1">
-            Test how Account Abstraction session keys programmatically enforce spending rules at the smart contract level.
+          <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 mt-3 uppercase">
+            Test how Account Abstraction session keys enforce rules.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-400 font-mono">
-          <Terminal className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-2 px-3 py-1.5 border border-ml-beige text-[9px] font-mono tracking-widest uppercase text-ml-beige">
+          <Terminal className="w-3 h-3" />
           <span>Interactive Verification Engine</span>
         </div>
       </div>
 
       {/* Architecture Visual Diagram */}
-      <div className="mt-6 p-4 rounded-2xl bg-gray-950/70 border border-gray-800 text-xs">
-        <div className="text-[11px] uppercase tracking-wider font-semibold text-gray-400 mb-3 flex items-center gap-1.5">
-          <Layers className="w-3.5 h-3.5 text-cyan-400" />
-          <span>TeamTab ERC-4337 Execution Pipeline</span>
+      <div className="mt-8 p-6 border border-ml-border bg-ml-surface">
+        <div className="text-[10px] uppercase tracking-widest font-mono text-ml-beige/60 mb-6 flex items-center gap-2">
+          <Layers className="w-4 h-4 text-ml-beige" />
+          <span>TeamTab ERC-4337 Pipeline</span>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-[11px] font-mono">
-          <div className="p-2.5 rounded-xl bg-gray-900 border border-gray-800">
-            <div className="text-emerald-400 font-bold">1. Session Key</div>
-            <div className="text-gray-400 text-[10px] mt-0.5">Off-Chain Signer</div>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 text-center text-[9px] font-mono tracking-widest uppercase">
+          <div className="p-4 border border-ml-border bg-ml-bg hover:border-ml-blue transition-colors group">
+            <div className="text-ml-blue font-bold group-hover:scale-105 transition-transform">1. Session Key</div>
+            <div className="text-ml-beige/40 mt-2">Off-Chain</div>
           </div>
-          <div className="p-2.5 rounded-xl bg-gray-900 border border-gray-800">
-            <div className="text-cyan-400 font-bold">2. UserOp</div>
-            <div className="text-gray-400 text-[10px] mt-0.5">EIP-712 Envelope</div>
+          <div className="p-4 border border-ml-border bg-ml-bg hover:border-ml-green transition-colors group">
+            <div className="text-ml-green font-bold group-hover:scale-105 transition-transform">2. UserOp</div>
+            <div className="text-ml-beige/40 mt-2">EIP-712</div>
           </div>
-          <div className="p-2.5 rounded-xl bg-gray-900 border border-gray-800">
-            <div className="text-purple-400 font-bold">3. Paymaster</div>
-            <div className="text-gray-400 text-[10px] mt-0.5">Gas Sponsorship</div>
+          <div className="p-4 border border-ml-border bg-ml-bg hover:border-ml-yellow transition-colors group">
+            <div className="text-ml-yellow font-bold group-hover:scale-105 transition-transform">3. Paymaster</div>
+            <div className="text-ml-beige/40 mt-2">Sponsorship</div>
           </div>
-          <div className="p-2.5 rounded-xl bg-gray-900 border border-gray-800">
-            <div className="text-amber-400 font-bold">4. Bundler</div>
-            <div className="text-gray-400 text-[10px] mt-0.5">EntryPoint Batch</div>
+          <div className="p-4 border border-ml-border bg-ml-bg hover:border-ml-pink transition-colors group">
+            <div className="text-ml-pink font-bold group-hover:scale-105 transition-transform">4. Bundler</div>
+            <div className="text-ml-beige/40 mt-2">Batching</div>
           </div>
-          <div className="p-2.5 rounded-xl bg-gray-900 border border-emerald-500/40 col-span-2 sm:col-span-1">
-            <div className="text-white font-bold">5. Team Vault</div>
-            <div className="text-emerald-400 text-[10px] mt-0.5">Policy Execution</div>
+          <div className="p-4 border border-ml-beige bg-ml-bg col-span-2 sm:col-span-1 shadow-[4px_4px_0_0_#EAE7DD]">
+            <div className="text-ml-beige font-bold">5. Vault</div>
+            <div className="text-ml-beige/60 mt-2">Execution</div>
           </div>
         </div>
       </div>
 
       {/* Test Scenarios Grid */}
-      <div className="grid grid-cols-1 gap-3 mt-6">
+      <div className="grid grid-cols-1 gap-4 mt-8">
         {testCases.map((tc) => {
           const isSelected = activeTest === tc.id;
           return (
             <div
               key={tc.id}
-              className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                isSelected ? "bg-gray-950 border-cyan-500/50" : "bg-gray-950/40 border-gray-800/80 hover:border-gray-700"
+              className={`p-6 border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${
+                isSelected ? "bg-ml-surface border-ml-beige" : "bg-ml-bg border-ml-border hover:border-ml-beige/50"
               }`}
             >
               <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-bold text-sm text-white">{tc.title}</span>
-                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${tc.badgeColor}`}>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="font-bold text-sm text-ml-beige uppercase tracking-widest">{tc.title}</span>
+                  <span className={`text-[9px] font-mono uppercase tracking-widest px-2 py-1 border ${tc.badgeColor}`}>
                     {tc.expected}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-1">{tc.description}</p>
+                <p className="text-[10px] font-mono text-ml-beige/60 mt-2 uppercase">{tc.description}</p>
               </div>
 
               <button
                 onClick={() => handleRunTest(tc.id as any)}
                 disabled={isRunning}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs font-bold text-gray-200 hover:text-white transition-colors shrink-0 disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-3 border border-ml-border hover:bg-ml-beige hover:text-ml-bg text-[10px] font-mono tracking-widest text-ml-beige uppercase transition-colors shrink-0 disabled:opacity-50"
               >
                 {isRunning && isSelected ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-cyan-400" />
+                  <Loader2 className="w-3 h-3 animate-spin" />
                 ) : (
-                  <Play className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
+                  <Play className="w-3 h-3" />
                 )}
-                <span>Evaluate On-Chain</span>
+                <span>Evaluate</span>
               </button>
             </div>
           );
@@ -171,42 +173,42 @@ export function AAPolicyInspector() {
 
       {/* Live Result Terminal */}
       {testResult && (
-        <div className="mt-6 p-4 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-xs animate-in fade-in">
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-gray-800">
-            <span className="text-gray-400 flex items-center gap-1.5">
-              <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Smart Account Execution Verdict</span>
+        <div className="mt-8 p-6 border border-ml-beige bg-ml-surface font-mono text-xs animate-in fade-in relative">
+          <div className="absolute top-0 left-0 w-full h-1 bg-ml-beige" />
+          <div className="flex items-center justify-between pb-4 mb-4 border-b border-ml-border">
+            <span className="text-ml-beige/60 flex items-center gap-2 uppercase tracking-widest">
+              <Terminal className="w-4 h-4 text-ml-beige" />
+              <span>Smart Account Verdict</span>
             </span>
             <span
-              className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                testResult.success ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"
+              className={`px-3 py-1.5 border text-[9px] font-bold uppercase tracking-widest ${
+                testResult.success ? "border-ml-green text-ml-green bg-ml-green/10" : "border-ml-pink text-ml-pink bg-ml-pink/10"
               }`}
             >
               {testResult.success ? "EXECUTION SUCCESS" : "POLICY REVERT"}
             </span>
           </div>
 
-          <div className="space-y-1.5 text-[11px]">
-            <div>
-              <span className="text-gray-500">Rule Evaluated: </span>
-              <span className="text-cyan-300">{testResult.ruleEvaluated}</span>
+          <div className="space-y-3 text-[10px] uppercase tracking-widest">
+            <div className="grid grid-cols-[150px_1fr] gap-4">
+              <span className="text-ml-beige/40">Rule Evaluated</span>
+              <span className="text-ml-blue">{testResult.ruleEvaluated}</span>
             </div>
-            <div>
-              <span className="text-gray-500">Result: </span>
-              <span className={testResult.success ? "text-emerald-300" : "text-rose-300"}>
+            <div className="grid grid-cols-[150px_1fr] gap-4">
+              <span className="text-ml-beige/40">Result</span>
+              <span className={testResult.success ? "text-ml-green" : "text-ml-pink"}>
                 {testResult.reason}
               </span>
             </div>
-            <div>
-              <span className="text-gray-500">Gas Sponsorship: </span>
-              <span className="text-emerald-400 font-bold">
-                {testResult.gasSponsored ? "Covered by Paymaster ($0 cost to signer)" : "N/A (Reverted prior to state change)"}
+            <div className="grid grid-cols-[150px_1fr] gap-4">
+              <span className="text-ml-beige/40">Gas Sponsorship</span>
+              <span className="text-ml-beige font-bold">
+                {testResult.gasSponsored ? "Covered by Paymaster" : "N/A (Reverted)"}
               </span>
             </div>
           </div>
         </div>
       )}
-
     </div>
   );
 }

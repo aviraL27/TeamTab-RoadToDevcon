@@ -20,13 +20,22 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         primary: {
-          DEFAULT: "#10b981", // Emerald accent
-          foreground: "#022c22",
-          hover: "#059669",
+          DEFAULT: "#fdfcf0", // Beige text
+          foreground: "#0a0a0a",
         },
         secondary: {
-          DEFAULT: "#06b6d4", // Cyan accent
-          foreground: "#083344",
+          DEFAULT: "#1a1a1a", 
+          foreground: "#fdfcf0",
+        },
+        ml: {
+          bg: "#0a0a0a",
+          surface: "#121212",
+          border: "#222222",
+          beige: "#EAE7DD",
+          pink: "#E73A60",
+          yellow: "#FFCC00",
+          green: "#00C76C",
+          blue: "#009AE2"
         },
         eth: {
           dark: "#0b0f19",
@@ -48,6 +57,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "monospace"],
+        display: ["Archivo Black", "sans-serif"],
       },
       keyframes: {
         "pulse-glow": {

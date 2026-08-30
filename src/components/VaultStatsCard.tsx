@@ -65,49 +65,48 @@ export function VaultStatsCard({
   const activeKeysCount = vault.keys.filter((k) => k.active).length;
 
   return (
-    <div className="rounded-3xl bg-gradient-to-b from-gray-900/90 via-gray-900/60 to-eth-slate/90 border border-gray-800/80 p-6 sm:p-8 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+    <div className="bg-ml-bg border border-ml-border p-8 sm:p-12 relative overflow-hidden">
       
-      {/* Background ambient lighting */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -mr-48 -mt-48" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -ml-48 -mb-48" />
+      {/* Background ambient lighting - removed to match brutalist style */}
+      <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(234,231,221,0.02)_50%,transparent_75%)] bg-[length:4px_4px] pointer-events-none" />
 
       {/* Top Bar: Vault Metadata & Address */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-gray-800/70">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-ml-border relative z-10">
         <div>
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <span className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+          <div className="flex items-center gap-4 flex-wrap">
+            <span className="px-3 py-1 text-[10px] font-mono uppercase tracking-widest bg-ml-surface border border-ml-border text-ml-beige">
               {vault.hackathonEvent}
             </span>
-            <span className="text-xs text-gray-400">Team Vault:</span>
-            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            <span className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase">Vault //</span>
+            <h2 className="text-2xl sm:text-4xl font-display text-ml-beige uppercase tracking-tight mt-1">
               {vault.teamName}
             </h2>
           </div>
 
           {/* Smart Account Address Pill */}
-          <div className="flex items-center gap-2 mt-2">
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-gray-950/70 border border-gray-800 text-xs font-mono text-gray-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              <span className="text-gray-400">Smart Vault:</span>
-              <span className="text-emerald-400 font-semibold">{vault.address.slice(0, 8)}...{vault.address.slice(-6)}</span>
+          <div className="flex items-center gap-3 mt-4">
+            <div className="flex items-center gap-2 px-3 py-1.5 border border-ml-border text-[10px] font-mono text-ml-beige/60 uppercase bg-ml-surface">
+              <ShieldCheck className="w-3 h-3 text-ml-green shrink-0" />
+              <span>Smart Vault:</span>
+              <span className="text-ml-beige font-bold">{vault.address.slice(0, 8)}...{vault.address.slice(-6)}</span>
               <button
                 onClick={handleCopy}
-                className="ml-1 text-gray-400 hover:text-white p-0.5 rounded transition-colors"
+                className="ml-2 text-ml-beige/60 hover:text-ml-beige transition-colors"
                 title="Copy Vault Address"
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? <Check className="w-3 h-3 text-ml-green" /> : <Copy className="w-3 h-3" />}
               </button>
             </div>
           </div>
         </div>
 
         {/* Action Controls for Lead */}
-        <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="flex items-center gap-4 flex-wrap">
           {currentRole === "lead" && (
             <>
               <button
                 onClick={onOpenFundModal}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-gray-950 font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="ml-button flex items-center gap-2 bg-ml-green text-ml-bg hover:bg-transparent hover:text-ml-green hover:border-ml-green"
               >
                 <ArrowDownLeft className="w-4 h-4" />
                 <span>Deposit Pot</span>
@@ -115,7 +114,7 @@ export function VaultStatsCard({
 
               <button
                 onClick={onOpenIssueKeyModal}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-cyan-600/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                className="ml-button flex items-center gap-2 bg-ml-blue text-ml-bg hover:bg-transparent hover:text-ml-blue hover:border-ml-blue"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Issue Member Key</span>
@@ -123,7 +122,7 @@ export function VaultStatsCard({
 
               <button
                 onClick={onOpenSweepModal}
-                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700 text-gray-300 hover:text-white font-semibold text-xs sm:text-sm transition-colors"
+                className="ml-button flex items-center gap-2"
                 title="Sweep unspent funds back to Lead after event"
               >
                 <ArrowUpRight className="w-4 h-4" />
@@ -135,69 +134,67 @@ export function VaultStatsCard({
       </div>
 
       {/* Primary Metrics Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8 relative z-10">
         
         {/* Available Balance */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-gray-950/50 border border-emerald-500/20 relative overflow-hidden">
-          <div className="text-xs text-gray-400 font-medium flex items-center justify-between">
-            <span>Available Balance</span>
-            <Coins className="w-4 h-4 text-emerald-400" />
+        <div className="p-6 border border-ml-border bg-ml-surface hover:border-ml-green transition-colors">
+          <div className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase flex items-center justify-between">
+            <span>Available</span>
+            <Coins className="w-4 h-4 text-ml-green" />
           </div>
-          <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl sm:text-3xl font-black text-white">{vault.currentBalance}</span>
-            <span className="text-sm font-bold text-emerald-400 font-mono">ETH</span>
+          <div className="mt-4 flex items-baseline gap-2">
+            <span className="text-3xl sm:text-4xl font-display text-ml-beige">{vault.currentBalance}</span>
+            <span className="text-xs font-mono text-ml-green">ETH</span>
           </div>
-          <div className="text-[11px] text-gray-400 mt-1">
+          <div className="text-[10px] font-mono text-ml-beige/60 mt-3 pt-3 border-t border-ml-border">
             ≈ ${(parseFloat(vault.currentBalance) * 3000).toLocaleString()} USD
           </div>
         </div>
 
         {/* Total Tab Spent */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-gray-950/50 border border-cyan-500/20 relative overflow-hidden">
-          <div className="text-xs text-gray-400 font-medium flex items-center justify-between">
-            <span>Total Spent</span>
-            <TrendingUp className="w-4 h-4 text-cyan-400" />
+        <div className="p-6 border border-ml-border bg-ml-surface hover:border-ml-blue transition-colors">
+          <div className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase flex items-center justify-between">
+            <span>Spent</span>
+            <TrendingUp className="w-4 h-4 text-ml-blue" />
           </div>
-          <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl sm:text-3xl font-black text-white">{vault.totalSpent}</span>
-            <span className="text-sm font-bold text-cyan-400 font-mono">ETH</span>
+          <div className="mt-4 flex items-baseline gap-2">
+            <span className="text-3xl sm:text-4xl font-display text-ml-beige">{vault.totalSpent}</span>
+            <span className="text-xs font-mono text-ml-blue">ETH</span>
           </div>
-          <div className="text-[11px] text-gray-400 mt-1">
-            {vault.spends.length} tagged transactions
+          <div className="text-[10px] font-mono text-ml-beige/60 mt-3 pt-3 border-t border-ml-border">
+            {vault.spends.length} tags
           </div>
         </div>
 
         {/* Total Funded Pot */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-gray-950/50 border border-gray-800 relative overflow-hidden">
-          <div className="text-xs text-gray-400 font-medium flex items-center justify-between">
-            <span>Total Funded Pot</span>
-            <Sparkles className="w-4 h-4 text-purple-400" />
+        <div className="p-6 border border-ml-border bg-ml-surface hover:border-ml-pink transition-colors">
+          <div className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase flex items-center justify-between">
+            <span>Funded Pot</span>
+            <Sparkles className="w-4 h-4 text-ml-pink" />
           </div>
-          <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl sm:text-3xl font-black text-white">{vault.totalDeposited}</span>
-            <span className="text-sm font-bold text-purple-400 font-mono">ETH</span>
+          <div className="mt-4 flex items-baseline gap-2">
+            <span className="text-3xl sm:text-4xl font-display text-ml-beige">{vault.totalDeposited}</span>
+            <span className="text-xs font-mono text-ml-pink">ETH</span>
           </div>
-          <div className="text-[11px] text-gray-400 mt-1">
-            {activeKeysCount} active session keys
+          <div className="text-[10px] font-mono text-ml-beige/60 mt-3 pt-3 border-t border-ml-border">
+            {activeKeysCount} active keys
           </div>
         </div>
 
         {/* Authority Expiration Countdown */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-gray-950/50 border border-amber-500/20 relative overflow-hidden">
-          <div className="text-xs text-gray-400 font-medium flex items-center justify-between">
-            <span>Authority Expiry</span>
-            <Clock className="w-4 h-4 text-amber-400" />
+        <div className="p-6 border border-ml-border bg-ml-surface hover:border-ml-yellow transition-colors">
+          <div className="text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase flex items-center justify-between">
+            <span>Expiry</span>
+            <Clock className="w-4 h-4 text-ml-yellow" />
           </div>
-          <div className="mt-2 flex items-baseline gap-1 font-mono text-amber-300 font-bold">
-            <span className="text-lg sm:text-2xl font-black">{timeLeft.days}d</span>
-            <span className="text-xs">:</span>
-            <span className="text-lg sm:text-2xl font-black">{String(timeLeft.hours).padStart(2, "0")}h</span>
-            <span className="text-xs">:</span>
-            <span className="text-lg sm:text-2xl font-black">{String(timeLeft.mins).padStart(2, "0")}m</span>
-            <span className="text-xs">:</span>
-            <span className="text-sm font-normal text-amber-400/80">{String(timeLeft.secs).padStart(2, "0")}s</span>
+          <div className="mt-4 flex items-baseline gap-1 font-mono text-ml-yellow">
+            <span className="text-xl sm:text-2xl font-bold">{timeLeft.days}d</span>
+            <span className="text-xs text-ml-yellow/60">:</span>
+            <span className="text-xl sm:text-2xl font-bold">{String(timeLeft.hours).padStart(2, "0")}h</span>
+            <span className="text-xs text-ml-yellow/60">:</span>
+            <span className="text-xl sm:text-2xl font-bold">{String(timeLeft.mins).padStart(2, "0")}m</span>
           </div>
-          <div className="text-[11px] text-amber-400/70 mt-1">
+          <div className="text-[10px] font-mono text-ml-beige/60 mt-3 pt-3 border-t border-ml-border">
             Auto-expires on-chain
           </div>
         </div>
@@ -205,16 +202,16 @@ export function VaultStatsCard({
       </div>
 
       {/* Budget Utilization Progress Bar */}
-      <div className="mt-6 pt-5 border-t border-gray-800/70">
-        <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
+      <div className="mt-8 pt-8 border-t border-ml-border relative z-10">
+        <div className="flex items-center justify-between text-[10px] font-mono tracking-widest text-ml-beige/60 uppercase mb-3">
           <span>Pot Budget Utilization</span>
-          <span className="font-semibold text-gray-200">
+          <span className="text-ml-beige">
             {percentSpent}% Used ({vault.totalSpent} / {vault.totalDeposited} ETH)
           </span>
         </div>
-        <div className="w-full h-2.5 rounded-full bg-gray-950 overflow-hidden p-0.5 border border-gray-800">
+        <div className="w-full h-4 border border-ml-border bg-ml-bg overflow-hidden p-0.5">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-cyan-500 to-purple-500 transition-all duration-500 shadow-sm"
+            className="h-full bg-ml-beige transition-all duration-500"
             style={{ width: `${percentSpent}%` }}
           />
         </div>

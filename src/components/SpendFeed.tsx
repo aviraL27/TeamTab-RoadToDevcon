@@ -12,7 +12,8 @@ import {
   FileText, 
   Sparkles, 
   Filter,
-  CheckCircle2
+  CheckCircle2,
+  User
 } from "lucide-react";
 
 interface SpendFeedProps {
@@ -67,56 +68,58 @@ export function SpendFeed({ onOpenReceipt }: SpendFeedProps) {
   };
 
   return (
-    <div className="rounded-3xl bg-gray-900/80 border border-gray-800/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl">
+    <div className="bg-ml-bg border border-ml-border p-8 sm:p-12 relative overflow-hidden">
       
       {/* Feed Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-gray-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-ml-border">
         <div>
-          <div className="flex items-center gap-2">
-            <Receipt className="w-5 h-5 text-emerald-400" />
-            <h3 className="text-lg sm:text-xl font-bold text-white">
-              Live Spending Tab & Audit Trail
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 border border-ml-border flex items-center justify-center bg-ml-green text-ml-bg">
+              <Receipt className="w-4 h-4" />
+            </div>
+            <h3 className="text-xl sm:text-2xl font-display text-ml-beige uppercase tracking-tight mt-1">
+              Live Feed
             </h3>
           </div>
-          <p className="text-xs text-gray-400 mt-1">
-            Real-time on-chain stream of every tagged team expenditure with verifiable receipt proofs.
+          <p className="text-[10px] font-mono tracking-widest text-ml-beige/60 mt-3 uppercase">
+            Real-time feed of all team spends.
           </p>
         </div>
 
         {/* Export CSV Button */}
         <button
           onClick={exportCSV}
-          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700 text-gray-200 text-xs font-semibold transition-colors shrink-0"
+          className="ml-button flex items-center gap-2"
         >
-          <Download className="w-4 h-4 text-emerald-400" />
-          <span>Export Expense Report</span>
+          <Download className="w-4 h-4" />
+          <span>Export CSV</span>
         </button>
       </div>
 
       {/* Search & Category Filter Bar */}
-      <div className="mt-5 flex flex-col sm:flex-row gap-3">
+      <div className="mt-8 flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
+          <Search className="w-4 h-4 text-ml-beige/40 absolute left-3 top-3.5" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by teammate, merchant, or purpose..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-gray-950/70 border border-gray-800 focus:border-emerald-500 text-xs text-white focus:outline-none transition-colors"
+            placeholder="Filter by name, vendor..."
+            className="w-full pl-9 pr-4 py-3 bg-ml-surface border border-ml-border focus:border-ml-beige text-xs text-ml-beige font-mono uppercase focus:outline-none transition-colors"
           />
         </div>
 
         {/* Category Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
           <button
             onClick={() => setSelectedCategory("All")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
+            className={`px-4 py-3 border text-[10px] font-mono uppercase tracking-widest transition-colors whitespace-nowrap ${
               selectedCategory === "All"
-                ? "bg-emerald-500 text-gray-950 font-bold"
-                : "bg-gray-950/60 hover:bg-gray-800 text-gray-400 border border-gray-800"
+                ? "bg-ml-beige text-ml-bg border-ml-beige"
+                : "bg-ml-surface text-ml-beige/60 border-ml-border hover:border-ml-beige hover:text-ml-beige"
             }`}
           >
-            All Categories ({vault.spends.length})
+            All ({vault.spends.length})
           </button>
           {CATEGORY_OPTIONS.filter((c) => c.value !== "All").map((c) => {
             const count = vault.spends.filter((s) => s.category === c.value).length;
@@ -125,10 +128,10 @@ export function SpendFeed({ onOpenReceipt }: SpendFeedProps) {
               <button
                 key={c.value}
                 onClick={() => setSelectedCategory(c.value)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
+                className={`px-4 py-3 border text-[10px] font-mono uppercase tracking-widest transition-colors whitespace-nowrap ${
                   selectedCategory === c.value
-                    ? "bg-emerald-500 text-gray-950 font-bold"
-                    : "bg-gray-950/60 hover:bg-gray-800 text-gray-400 border border-gray-800"
+                    ? "bg-ml-beige text-ml-bg border-ml-beige"
+                    : "bg-ml-surface text-ml-beige/60 border-ml-border hover:border-ml-beige hover:text-ml-beige"
                 }`}
               >
                 {c.value.split(" ")[0]} ({count})
@@ -139,45 +142,48 @@ export function SpendFeed({ onOpenReceipt }: SpendFeedProps) {
       </div>
 
       {/* Spends List */}
-      <div className="mt-5 space-y-3">
+      <div className="mt-8 space-y-4">
         {filteredSpends.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl bg-gray-950/40 border border-gray-800/60 text-gray-400 text-xs">
-            No spending transactions found matching your criteria.
+          <div className="text-center py-12 border border-ml-border border-dashed text-ml-beige/40 text-[10px] font-mono uppercase tracking-widest">
+            {searchQuery ? "No spends found for filter." : "No team spends yet."}
           </div>
         ) : (
           filteredSpends.map((spend) => {
-            const catColor = getCategoryColor(spend.category);
             const timeAgo = formatTimeAgo(spend.timestamp);
 
             return (
               <div
                 key={spend.id}
-                className="p-4 sm:p-5 rounded-2xl bg-gray-950/60 border border-gray-800/80 hover:border-gray-700/80 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="p-4 sm:p-6 border border-ml-border bg-ml-surface hover:border-ml-beige transition-all group flex flex-col sm:flex-row sm:items-center justify-between gap-6"
               >
                 {/* Left: Spender & Purpose Info */}
-                <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center font-bold text-sm text-emerald-400 shrink-0">
-                    {spend.memberName.charAt(0)}
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 border border-ml-border flex items-center justify-center bg-ml-bg text-ml-beige shrink-0 group-hover:scale-105 transition-transform">
+                    <User className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-bold text-sm text-white">{spend.memberName}</span>
-                      <span className="text-gray-400 text-xs">paid</span>
-                      <span className="font-semibold text-xs text-gray-200">{spend.recipientName || "Merchant"}</span>
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded border ${catColor}`}>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-ml-beige uppercase tracking-widest text-xs">
+                        {spend.memberName}
+                      </span>
+                      <span className="text-[10px] text-ml-beige/60 font-mono">paid</span>
+                      <span className="font-bold text-ml-beige text-xs truncate max-w-[120px] uppercase">
+                        {spend.recipientName || "Merchant"}
+                      </span>
+                      <span className="text-[9px] text-ml-blue border border-ml-blue/30 px-1 py-0.5 ml-2 uppercase font-mono tracking-widest">
                         {spend.category}
                       </span>
                     </div>
 
-                    <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                    <p className="text-[10px] text-ml-beige/60 mt-1 font-mono uppercase">
                       "{spend.purpose}"
                     </p>
 
-                    <div className="flex items-center gap-3 mt-2 text-[11px] text-gray-400 font-mono flex-wrap">
+                    <div className="flex items-center gap-3 mt-2 text-[9px] font-mono tracking-widest uppercase text-ml-beige/40">
                       <span>{timeAgo}</span>
                       <span>•</span>
-                      <span className="text-emerald-400/90 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-emerald-400" />
+                      <span className="text-ml-green flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-ml-green" />
                         Gas Sponsored
                       </span>
                       <span>•</span>
@@ -185,7 +191,7 @@ export function SpendFeed({ onOpenReceipt }: SpendFeedProps) {
                         href={`https://sepolia.etherscan.io/tx/${spend.txHash}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-emerald-400 inline-flex items-center gap-1"
+                        className="hover:text-ml-beige inline-flex items-center gap-1 transition-colors"
                       >
                         <span>Tx: {spend.txHash.slice(0, 8)}...</span>
                         <ExternalLink className="w-3 h-3" />
@@ -195,21 +201,18 @@ export function SpendFeed({ onOpenReceipt }: SpendFeedProps) {
                 </div>
 
                 {/* Right: Amount & Receipt Button */}
-                <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-gray-800/60">
+                <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center shrink-0 pt-4 sm:pt-0 border-t sm:border-t-0 border-ml-border w-full sm:w-auto">
                   <div className="text-right">
-                    <div className="text-base sm:text-lg font-black text-white font-mono">
-                      -{spend.amount} <span className="text-xs text-emerald-400">ETH</span>
-                    </div>
-                    <div className="text-[11px] text-gray-400">
-                      ≈ ${spend.amountUSD.toLocaleString()} USD
+                    <div className="text-xl font-display text-ml-beige group-hover:text-ml-pink transition-colors">
+                      -{spend.amount} ETH
                     </div>
                   </div>
 
                   <button
                     onClick={() => onOpenReceipt(spend)}
-                    className="mt-2 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-gray-800/80 hover:bg-gray-700 border border-gray-700 text-gray-300 hover:text-white text-xs transition-colors"
+                    className="mt-2 flex items-center gap-2 px-3 py-1.5 border border-ml-border hover:bg-ml-beige hover:text-ml-bg text-ml-beige/80 text-[9px] font-mono uppercase tracking-widest transition-colors"
                   >
-                    <FileText className="w-3.5 h-3.5 text-cyan-400" />
+                    <FileText className="w-3 h-3" />
                     <span>View Receipt</span>
                   </button>
                 </div>
